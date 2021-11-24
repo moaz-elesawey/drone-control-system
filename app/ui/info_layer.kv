@@ -1,0 +1,66 @@
+##:kivy
+
+<InfoLayer>:
+
+    # _camera_info: _camera_info.__self__
+    _altitude_info: _altitude_info.__self__
+    _speed_info: _speed_info.__self__
+    _rotation_info: _rotation_info.__self__
+    _device_info: _device_info.__self__
+    _flight_time_info: _flight_time_info.__self__
+    _partial_speed_info: _partial_speed_info.__self__
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # ZoomLabel:
+    #     size_hint: None, None
+    #     size: dp(90), dp(40)
+    #     pos: W.width/2-dp(30), W.height - (dp(80) + dp(7))
+
+    # CameraInfo:
+    #     id: _camera_info
+    #     size_hint: None, None
+    #     size: dp(150), dp(40)
+    #     pos: W.width-dp(50)*5.1, W.height - (dp(80) + dp(7))
+
+    AltitudeInfo:
+        id: _altitude_info
+        size_hint: None, None
+        size: dp(80), dp(40)
+        pos: W.width//2 + dp(73), dp(70)-self.height/2+dp(3)
+        
+    SpeedInfo:
+        id: _speed_info
+        size_hint: None, None
+        size: dp(80), dp(40)
+        pos: W.width//2 - dp(73)-self.width, dp(70)-self.height/2+dp(3)
+
+    PartialSpeedInfo:
+        id: _partial_speed_info
+        size_hint: None, None
+        size: dp(100), dp(40)
+        pos: W.width//2 - dp(64)-self.width, dp(4)
+        
+    RotationInfo:
+        id: _rotation_info
+        size_hint: None, None
+        size: dp(160), dp(40)
+        pos: W.width - (self.width+dp(10)), dp(5)
+        
+    DeviceInfo:
+        id: _device_info
+        size_hint: None, None
+        size: dp(160), dp(40)
+        pos: W.width - (self.width+dp(10)), dp(50)
+        
+    FlightTimeInfo:
+        id: _flight_time_info
+        size_hint: None, None
+        size: dp(70), dp(40)
+        pos: W.width - (self.width+dp(175)), dp(5)
+        

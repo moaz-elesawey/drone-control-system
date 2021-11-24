@@ -1,0 +1,40 @@
+##:kivy
+
+            
+<CameraFeedLayer>:
+    icon : "fullscreen"
+    drone_camera_feed: drone_camera_feed.__self__
+    
+    canvas.before:
+        Color:
+            rgba: 0.5,0.5,0.5,.5
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(3)]
+        
+    CameraFeed:
+
+        id: drone_camera_feed
+        allow_stretch: False
+        keep_ratio: True
+        
+        size: (root.size[1]*self.ratio_, root.size[1])
+        pos: root.pos[0]+(root.size[0]-self.size[0])/2, root.pos[1]
+        # size: root.size
+        # center: root.center
+        pos_hint: {'center_x': .5, 'center_y': .5}
+
+
+<CameraFeedThumbnail>:
+    icon : "fullscreen"
+    canvas.before:
+        Color:
+            rgba: 35./255.,35./255.,35./255.,.6
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(3)]
+    CameraFeed:
+        size: root.size
+        pos: root.pos

@@ -1,0 +1,61 @@
+##:kivy
+
+<MapWidget>:
+    dronesmap: dronesmap.__self__
+    icon: "fullscreen"
+
+    canvas.before:
+        Color:
+            rgba: 35./255.,35./255.,35./255.,.6
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5)]
+
+    DronesMap:
+        id: dronesmap
+        dronemarker: dronemarker.__self__
+        homemarker: homemarker.__self__
+
+        attribution: ""
+        size_hint: None, None
+        width: root.width-8
+        height: root.height-8
+        x: root.x+4
+        y: root.y+4
+        min_zoom: 4
+        max_zoom: 18
+        zoom: 10
+        lat: 31.1
+        lon: 31.1
+        
+        MapMarker:
+            id: dronemarker
+            lat: 10
+            lon: 10
+        
+        MapMarker:
+            id: homemarker
+            source: './assets/home-marker-icon.png'
+            lat: 10.1
+            lon: 10.1
+            
+    MDIconButton:
+        icon: root.icon
+        user_font_size: "20sp"
+        size: dp(40), dp(40)
+        pos: self.parent.width-self.width, 0 
+        theme_text_color: "Custom"
+        text_color: 0,0,0,1
+        on_release:
+            app.toggle_map_view(self)
+
+    MDIconButton:
+        icon: "crosshairs-gps"
+        user_font_size: "18sp"
+        size: dp(40), dp(40)
+        pos: self.parent.pos[0], self.parent.height-self.height if self.parent.height == dp(100) else self.parent.height-self.height-dp(40)
+        theme_text_color: "Custom"
+        text_color: 0,0,0,1
+        on_release:
+            dronesmap.center_on(dronemarker.lat, dronemarker.lon)

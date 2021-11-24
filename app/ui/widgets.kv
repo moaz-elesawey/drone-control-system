@@ -1,0 +1,907 @@
+##:kivy
+
+<FlightModeLabel@MDLabel>:
+    font_size: dp(9)
+    text: "STABILIZE"
+    theme_text_color: "Custom"
+    text_color: 1,1,1,1
+    bold: True
+    font_style: "Body2"
+
+<TimeProgressBar@Widget>:
+    percent: .8
+    remaining_time: remaining_time.__self__
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+        # Ok part
+        Color:
+            rgba: 0,1,0,1
+        Rectangle:
+            pos: self.pos
+            size: self.width*self.percent, self.height
+        
+        #critical part
+        Color:
+            rgba: 1,0,0,1
+        Rectangle:
+            pos: self.pos
+            size: self.width*.1, self.height
+        # Moderate part
+        Color:
+            rgba: 1,1,0,1
+        Rectangle:
+            pos: self.x+self.width*.1, self.y
+            size: self.x+self.width*.1, self.height
+        Color:
+            rgba: 1,1,1,1
+        Ellipse:
+            pos: [self.x+self.width*.1, self.center[1]-dp(5)]
+            size: dp(10), dp(10)
+        
+        Color:
+            rgba: 1,1,1,1
+        Ellipse:
+            pos: [self.x+self.width*.2, self.center[1]-dp(5)]
+            size: dp(10), dp(10)
+
+    Label:
+        id: remaining_time
+        padding: 3, 3
+
+        canvas.before:
+            Color:
+                rgba: 1,1,1,1
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [dp(7)]
+            SmoothLine:
+                width: dp(1.1)
+                rounded_rectangle: [self.x, self.y, self.width, self.height, dp(7)]
+
+        text: '34:23'
+        halign: 'center'
+        font_size: dp(12)
+        # bold: True
+        font_name: './fonts/roboto/Roboto-Medium.ttf'
+        color: 0,0,0,1
+        size_hint: None, None
+        height: root.height*4.4
+        width: dp(40)
+        center: root.width*root.percent, root.center[1]
+
+
+<ZoomLabel@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 0,0,0,0
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5)]
+
+        Color:
+            rgba: 0,1,0,.7
+        Line:
+            width: dp(1.2)
+            rounded_rectangle: [self.x, self.y, self.width, self.height, dp(5)]
+
+    Label:
+        size_hint: 1,1
+        text: "ZOOM: 11.0X"
+        font_size: dp(13)
+        theme_text_color: "Custom"
+        halign: 'center'
+        color: 0,0,0,.8
+        bold: True
+
+
+<InfoCard>:
+    icon: ""
+    source: ''
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#f9f9f9")
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(2)]
+    MDIcon:
+        size_hint: 1,1
+        icon: root.icon
+        source: root.source
+        halign: 'center'
+
+
+
+<ControllerCard>:
+    msg: "TAKEOFF"
+    source: ''
+    label: label.__self__
+    font_name: './fonts/roboto/Roboto-Medium.ttf'
+    # width: label.width+dp(4)
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#f9f9f9")
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(2)]
+    Label:
+        id: label
+        size_hint: 1,1
+        text: root.msg
+        width: self.texture_size[0]
+        font_name: root.font_name
+        halign: 'center'
+        color: 0,0,0,1
+
+
+<DirectionKey>:
+    icon: ""
+    source: ''
+
+    # on_press:
+    #     app.send_commands_collback(self)
+    on_release:
+        app.send_command(self.command_code)
+
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#f9f9f9")
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(2)]
+    MDIcon:
+        size_hint: 1,1
+        icon: root.icon
+        source: root.source
+        halign: 'center'
+
+
+<JoyStick>:
+    canvas.before:
+        Color:
+            rgba: (0,0,0,1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.width]
+
+<FingerController>:
+    joystick: joystick.__self__
+
+    canvas.before:
+        Color:
+            rgba: (.5,.5,.5,.3)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(10)]
+        Color:
+            rgba: (0,0,0, .9)
+        Line:
+            width: dp(1.1)
+            rounded_rectangle: [self.x, self.y, self.width, self.height, dp(10)]
+
+        Line:
+            width: dp(1.1)
+            points: [self.x+self.width/2, self.y, self.x+self.width/2, self.y+self.height]
+        Line:
+            width: dp(1.1)
+            points: [self.x, self.y+self.height/2, self.x+self.width, self.y+self.height/2]
+
+    JoyStick:
+        id: joystick
+        size: dp(40), dp(40)
+        center: root.center
+
+
+<Gyroscope>:
+    roll_angle: 0
+    yaw_angle: 0
+    pitch_angle: 0
+    
+    canvas.before:
+
+        Color:
+            # rgba: [*get_color_from_hex('#414040')[:3], .8]
+            rgba: 0,0,0,.65
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.width]
+        
+        Color:
+            rgba: 1,1,1,1
+        Line:
+            width: 1
+            dash_length: dp(7)
+            dash_offset: dp(3)
+            points: (self.x+self.width//2, self.y, self.x+self.width//2, self.y+self.height)
+        Line:
+            width: 1
+            dash_length: dp(6)
+            dash_offset: dp(4)
+            points: (self.x, self.y+self.height//2, self.x+self.width, self.y+self.height//2)
+        
+        Line:
+            width: 1
+            dash_length: dp(6)
+            dash_offset: dp(4)
+            circle: (self.center_x, self.center_y, self.width*(1/9))
+        Line:
+            width: 1
+            dash_length: dp(6)
+            dash_offset: dp(4)
+            circle: (self.center_x, self.center_y, self.width*(2/9))
+        Line:
+            width: 1
+            dash_length: dp(6)
+            dash_offset: dp(4)
+            circle: (self.center_x, self.center_y, self.width*(3/9))
+        Line:
+            width: 1
+            dash_length: dp(6)
+            dash_offset: dp(4)
+            circle: (self.center_x, self.center_y, self.width*(4/9))
+
+
+    # Horizon Indecator
+    Widget:
+        size_hint: None, None
+        size: dp(80), dp(2)
+        x: root.center[0]-self.width/2
+        y: root.center[1]+(math.sin(root.pitch_angle)*self.parent.height/2)
+
+        canvas.before:
+            PushMatrix
+
+            Rotate:
+                angle: self.parent.roll_angle
+                origin: self.center
+
+            Color:
+                rgba: get_color_from_hex('#ffffff')
+            
+            Rectangle:
+                pos: self.pos
+                size: self.size[0]*1/3, self.size[1]
+
+            Rectangle:
+                pos: self.pos[0]+self.size[0]*2./3, self.pos[1]
+                size: self.size[0]/3, self.size[1]
+            
+        canvas.after:
+            PopMatrix
+
+
+	# Pilot indecator
+    Widget:
+        size_hint: None, None
+        size: dp(20), dp(20)
+        center: root.center[0]+dp(20), root.center[1]+dp(45)
+
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex("#0885f7")
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [self.width]
+            Color:
+                rgba: 1,1,1,1
+            Line:
+                width: dp(1.2)
+                circle: [self.center_x, self.center_y, self.width/2]
+
+            Color:
+                rgba: 1,0,0,1
+            Triangle:
+                points: [self.x+3, self.y+self.height-2, self.x+self.width/2, self.y+self.height+dp(10), self.x+self.width-3, self.y+self.height-2]
+            
+            # Color:
+            #     rgba: 1,1,1,1
+            # Line:
+            #     width: .8
+            #     points: [self.x+5, self.y+self.height-2, self.x+self.width-5, self.y+self.height-2]
+
+	# Home Indecator
+    Widget:
+        size_hint: None, None
+        size: dp(20), dp(20)
+        pos: root.center[0]-self.height, root.center[1]+dp(20)
+
+        canvas.before:
+            Color:
+                rgba: get_color_from_hex("#a6c216")
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [self.width]
+            Color:
+                rgba: 1,1,1,1
+            Line:
+                width: dp(1.2)
+                circle: [self.center_x, self.center_y, self.width/2]
+        Label:
+            center: self.parent.center
+            text: 'H'
+            font_size: dp(16)
+			halign: 'center'
+        	font_name: './fonts/Righteous-Regular.ttf'
+            bold: True
+            color: get_color_from_hex('#060701')
+
+	# Drone Indecator
+    Widget:
+        size_hint: None, None
+        size: dp(30), dp(30)
+        center: root.center
+
+        canvas.before:
+            PushMatrix
+
+            Rotate:
+                angle: self.parent.yaw_angle
+                origin: self.center
+
+            Color:
+                rgba: 0,0,0,0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+			Color:
+				rgba: get_color_from_hex("#0885f7")
+
+			Triangle:
+				points: [root.center[0]-self.width/3, root.center[1]-self.height/4,    root.center[0], root.center[1]+self.height/2,    root.center[0]+self.width/3, root.center[1]-self.height/4]
+			Triangle:
+				points: [root.center[0]-self.width/2, root.center[1]-self.height/2,  root.center[0]-self.width/3, root.center[1]-self.height/4,   root.center[0], root.center[1]-self.height/4]
+			Triangle:
+				points: [ root.center[0], root.center[1]-self.height/4,  root.center[0]+self.width/3, root.center[1]-self.height/4, root.center[0]+self.width/2, root.center[1]-self.height/2 ]
+			Color:
+                rgba: 1,1,1,1
+
+			Line:
+				width: dp(1.1)
+				points: [root.center[0]-self.width/2, root.center[1]-self.height/2,   root.center[0], root.center[1]+self.height/2,     root.center[0]+self.width/2, root.center[1]-self.height/2,  root.center[0], root.center[1]-self.height/4, root.center[0]-self.width/2, root.center[1]-self.height/2, ] 
+
+        
+        canvas.after:
+            PopMatrix
+
+
+			
+
+<CameraInfo@BoxLayout>:
+    iso     : "100"
+    shutter : "1/100"
+    ev      : "+0.3"
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,.8
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5)]
+    MDLabel:
+        text: "ISO\n"+root.iso
+        halign: 'center'
+        size_hint: .3, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        font_style: "Body2"
+    MDLabel:
+        text: "Shutter\n"+root.shutter
+        halign: 'center'
+        size_hint: .4, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        font_style: "Body2"
+    MDLabel:
+        text: "EV\n"+root.ev
+        halign: 'center'
+        size_hint: .3, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        font_style: "Body2"
+
+<RotationInfo@BoxLayout>:
+    pitch   : "0.0"
+    yaw     : "0.0"
+    roll    : "0.0"
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,.8
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5)]
+    MDLabel:
+        text: "PITCH\n"+root.pitch
+        halign: 'center'
+        size_hint: .4, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(13)
+    MDLabel:
+        text: "ROLL\n"+root.roll
+        halign: 'center'
+        size_hint: .3, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(13)
+    MDLabel:
+        text: "YAW\n"+root.yaw
+        halign: 'center'
+        size_hint: .3, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(13)
+
+<DeviceInfo@BoxLayout>:
+    bat     : "0"
+    vltg    : "0.0"
+    temp    : "0.0"
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,.8
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5)]
+    MDLabel:
+        text: "BAT\n"+root.bat+"%"
+        halign: 'center'
+        size_hint: .3, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(13)
+    MDLabel:
+        text: "VLTG\n"+root.vltg+'V'
+        halign: 'center'
+        size_hint: .3, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(13)
+    MDLabel:
+        text: "TEMP\n"+root.temp+'°C'
+        halign: 'center'
+        size_hint: .4, 1
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(13)
+
+<FlightTimeInfo@BoxLayout>:
+    time    : "00:00:00"
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,.8
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(5)]
+    MDLabel:
+        text: "FT\n"+root.time
+        halign: 'center'
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        # font_style: "Body2"
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(14)
+
+<AltitudeInfo@BoxLayout>:
+    alt: "0.0"
+    canvas.before:
+        Color:
+            rgba: 0,0,0, .8
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 0,0,0,1
+        Line:
+            width: dp(1.1)
+            rectangle: [self.x, self.y, self.width, self.height]
+            
+    MDLabel:
+        text: "ALTITUDE\n"+root.alt+' M'
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(14)
+        size: root.size
+        halign: "center"
+
+<SpeedInfo@BoxLayout>:
+    speed   : "0.0"
+    
+    canvas.before:
+        Color:
+            rgba: 0,0,0, .8
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 0,0,0,1
+        Line:
+            width: dp(1.1)
+            rectangle: [self.x, self.y, self.width, self.height]
+            
+    MDLabel:
+        text: "SPEED\n"+root.speed+' M/S'
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(14)
+        size: root.size
+        halign: "center"
+
+<PartialSpeedInfo@BoxLayout>:
+    vx: 0.0
+    vy: 0.0
+    vz: 0.0
+
+    Label:
+        # id: xv_label
+        text: 'X\n{}'.format(self.parent.vx)
+        size_hint: .3, 1
+        halign: 'center'
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(14)
+    Label:
+        # id: yv_label
+        text: 'Y\n{}'.format(self.parent.vy)
+        size_hint: .3, 1
+        halign: 'center'
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(14)
+    Label:
+        # id: zv_label
+        text: 'Z\n{}'.format(self.parent.vz)
+        size_hint: .3, 1
+        halign: 'center'
+        font_name: './fonts/Righteous-Regular.ttf'
+        font_size: dp(14)
+    
+
+<-CameraFeed>:
+    source: './assets/feed-placeholder.jpg'
+    allow_stretch: False
+    keep_ratio: True
+    ratio_: (16/9)
+    wide: self.width > self.height
+
+    canvas:
+        Color:
+            rgb: (1, 1, 1)
+        Rectangle:
+            texture: self.texture
+            size: self.size
+            pos: self.pos
+        Color:
+            rgba: 1,1,1,1
+        
+        # Cross Lines
+        Line:
+            width: dp(1.1)
+            points: [0,0, W.width, W.height]
+        Line:
+            width: dp(1.1)
+            points: [0, W.height, W.width, 0]
+
+        # Grid Lines
+        Line:
+            width: dp(1.1)
+            points: 0, W.height*1/3, W.width, W.height*1/3
+        Line:
+            width: dp(1.1)
+            points: 0, W.height*2/3, W.width, W.height*2/3
+        Line:
+            width: dp(1.1)
+            points: W.width*1/3, 0, W.width*1/3, W.height
+        Line:
+            width: dp(1.1)
+            points: W.width*2/3, 0, W.width*2/3, W.height
+
+        # Plus Lines
+        Line:
+            width: dp(1.1)
+            points: [W.center[0]-dp(40), W.center[1],W.center[0]+dp(40), W.center[1]]
+        Line:
+            width: dp(1.1)
+            points: [W.center[0], W.center[1]-dp(30),W.center[0], W.center[1]+dp(30)]
+        
+
+<ExpansionPanel>:
+    orientation: 'vertical'
+    text: ''
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,.8
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        size_hint: 1, None
+        height: dp(45)
+        
+        MDLabel:
+            padding: [dp(20), dp(10)]
+            text: root.text
+            text_style: 'Body2'
+            theme_text_color: 'Custom'
+            text_color: 1,1,1,1
+            size_hint: None, None
+            pos: self.parent.x+dp(10), self.parent.y
+            size: self.parent.width-self.parent.height, self.parent.height
+        MDIcon:
+            id: icon
+            icon: 'chevron-right'
+            size_hint: None, None
+            theme_text_color: 'Custom'
+            text_color: 1,1,1,1
+            size: self.parent.height, self.parent.height
+            pos: self.parent.x+self.parent.width-self.width, self.parent.y
+        
+<ToggleSelectBtn@ToggleButton>:
+    background_color: .23,.23,.23,1
+    background_down: 'assets/toggle-button-background.png'
+
+<FormatToggleSelectArea>:
+    padding: dp(4)
+    ToggleSelectBtn:
+        text: 'JPEG'
+        group: 'camera_format'
+        width: root.width/2
+        height: root.height
+        state: 'down'
+
+    ToggleSelectBtn:
+        text: 'JPEG+RAW'
+        group: 'camera_format'
+        width: root.width/2
+        height: root.height
+
+<FrameSizeToggleSelectArea>:
+    padding: dp(4)
+    ToggleSelectBtn:
+        text: '16:9'
+        group: 'frame_size'
+        width: root.width/3
+        height: root.height
+        state: 'down'
+        
+        on_state:
+            app.change_frame_size(self)
+
+    ToggleSelectBtn:
+        text: '4:3'
+        group: 'frame_size'
+        width: root.width/3
+        height: root.height
+
+        on_state:
+            app.change_frame_size(self)
+    
+    ToggleSelectBtn:
+        text: 'Full'
+        group: 'frame_size'
+        width: root.width/3
+        height: root.height
+
+        on_state:
+            app.change_frame_size(self)
+    
+<PanelTab>:
+    toggled: False
+    padding: [dp(12),dp(0)]
+    size_hint: None, None
+    text: ""
+    text: self.text.upper()
+    font_name: 'fonts/roboto/Roboto-Regular.ttf'
+    halign: 'center'
+    size: self.texture_size[0], self.parent.height
+
+    on_release:
+        app.change_panel_screen(self)
+
+    canvas.before:
+        Color:
+            rgba: (1,1,1,1) if self.toggled else (0,0,0,0)
+        Line:
+            width: dp(1.3)
+            points: [self.center[0]-(self.width/2)+dp(5), self.y, (self.center[0]+self.width/2)-dp(5), self.y]
+
+    color: get_color_from_hex("#f9f9f9") if root.toggled else get_color_from_hex("#e1e1e1")
+
+
+<SettingPanel>:
+    panel_manager: panel_manager.__self__
+    safety: safety.__self__
+    camera: camera.__self__
+    transimission: transimission.__self__
+    control: control.__self__
+    tutorial: tutorial.__self__
+    about: about.__self__
+
+    panel_header: [safety, camera, transimission, control, tutorial, about]
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,.8
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [0] #[dp(20),dp(0),dp(0),dp(20)]
+
+    ScrollView:
+        size_hint: 0,0
+        size: self.parent.width-dp(60), dp(40)
+        pos: self.parent.x+dp(20), self.parent.height-self.height-dp(5)
+
+        always_overscroll: False
+        bar_color: 0,0,0,0
+        bar_inactive_color: 0,0,0,0
+
+        BoxLayout:
+            size_hint: None, None
+            size: self.parent.width-dp(40), self.parent.height
+            pos: self.parent.x, self.parent.height-self.height
+            spacing: dp(0)
+            center_x: .5
+            width: self.minimum_width
+
+            PanelTab:
+                id: safety
+                text: "Safety"
+                toggled: True
+            PanelTab:
+                id: control
+                text: "Control"
+            PanelTab:
+                id: camera
+                text: "Camera"
+            PanelTab:
+                id: transimission
+                text: "Transimission"
+            PanelTab:
+                id: tutorial
+                text: "Tutorial"
+            PanelTab:
+                id: about
+                text: "About"
+            
+
+    MDIconButton:
+        id: close_panel_btn
+        icon: 'logout'
+        user_font_size: sp(20)
+        theme_text_color: 'Custom'
+        text_color: 1,1,1,1
+        size_hint: 0,0
+        size: dp(40), dp(40)
+        pos: self.parent.x+self.parent.width-self.width-dp(5), self.parent.height-self.height-dp(5)
+
+        on_release:
+            app.close_setting_panel_animation.start(app.setting_panel)
+
+    BoxLayout:
+        size_hint: None, None
+        size: self.parent.width, self.parent.height-dp(50)
+        pos: self.parent.pos
+
+        canvas.before:
+            Color:
+                rgba: (0,0,0,0)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ScreenManager:
+            id: panel_manager
+            PanelScreen:
+                name: 'safety'
+            PanelScreen:
+                name: 'control'
+            PanelScreen:
+                name: 'camera'
+            PanelScreen:
+                name: 'transimission'
+            PanelScreen:
+                name: 'tutorial'
+            PanelScreen:
+                name: 'about'
+
+       
+<PanelScreen>:
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        size_hint: None, None
+        size: self.parent.size
+        bar_color: 0,0,0,0
+        bar_inactive_color: 0,0,0,0
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: dp(10)
+            # padding: dp(20)
+
+            ExpansionPanel:
+                size_hint: 1, None
+                height: dp(45)
+                text: 'Batery Info'
+
+            BoxLayout:
+                size_hint: 1, None
+                height: dp(50)
+                padding: [dp(20), dp(5)]
+
+                canvas.before:
+                    Color:
+                        rgba: 0,0,0,.9
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                MDLabel:
+                    text: 'Format'
+                    theme_text_color: 'Custom'
+                    text_color: 1,1,1,1
+                    size_hint: .4, 1
+
+
+                FormatToggleSelectArea:
+
+            
+            BoxLayout:
+                size_hint: 1, None
+                height: dp(50)
+                padding: [dp(20), dp(5)]
+
+                canvas.before:
+                    Color:
+                        rgba: 0,0,0,.9
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                MDLabel:
+                    text: 'Frame Size'
+                    theme_text_color: 'Custom'
+                    text_color: 1,1,1,1
+                    size_hint: .4, 1
+
+
+                FrameSizeToggleSelectArea:
+
+

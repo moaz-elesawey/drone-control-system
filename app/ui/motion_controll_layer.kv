@@ -1,0 +1,93 @@
+##:kivy
+
+<MotionControllLayer>:
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    DirectionKey:
+        command: "foreward"
+        command_code: "6"
+        icon: 'chevron-up-box'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(90), W.height/2+dp(25)
+    DirectionKey:
+        command: "backward"
+        command_code: "7"
+        icon: 'chevron-down-box'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(90), W.height/2-dp(65)
+    
+    DirectionKey:
+        command: "stop"
+        command_code: "17"
+        icon: "origin"
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(90), W.height/2-dp(20)
+        
+    DirectionKey:
+        command: "left"
+        command_code: "8"
+        icon: 'chevron-left-box'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(135), W.height/2-dp(20)
+    DirectionKey:
+        command: "right"
+        command_code: "9"
+        icon: 'chevron-right-box'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(5)-dp(40), W.height/2-dp(20)
+
+    # FingerController:
+    #     size_hint: None, None
+    #     height: dp(130)
+    #     width: self.height
+    #     pos: (W.width-self.width-dp(5), W.height/2-self.height/2)
+
+
+    DirectionKey:
+        command: "asend"
+        command_code: "2"
+        icon: 'chevron-double-up'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(50), W.height/2+dp(25)
+    DirectionKey:
+        command: "dsend"
+        command_code: "3"
+        icon: 'chevron-double-down'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(50), W.height/2-dp(65)
+    
+    DirectionKey:
+        command: "stop"
+        command_code: "16"
+        icon: "origin"
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(50), W.height/2-dp(20)
+        
+    DirectionKey:
+        command: "rotate-l"
+        command_code: "4"
+        icon: 'rotate-left'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(5), W.height/2-dp(20)
+    DirectionKey:
+        command: "rotate-r"
+        command_code: "5"
+        icon: 'rotate-right'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(95), W.height/2-dp(20)

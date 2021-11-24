@@ -1,0 +1,69 @@
+##:kivy
+
+#:import W kivy.core.window.Window
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import math math
+
+#:include ui/widgets.kv
+#:include ui/controller_layer.kv
+#:include ui/info_layer.kv
+#:include ui/statusbar.kv
+#:include ui/camera_feed_layer.kv
+#:include ui/motion_controll_layer.kv
+#:include ui/map_layer.kv
+
+FloatLayout:
+    size_hint: None, None
+    size: W.size
+    _camera_feed_layer: _camera_feed_layer.__self__
+    _controll_layer: _controll_layer.__self__
+    _setting_panel: _setting_panel.__self__
+    _info_layer: _info_layer.__self__
+    _map_layer: _map_layer.__self__
+    statusbar: statusbar.__self__
+
+    CameraFeedLayer:
+        id: _camera_feed_layer
+        size_hint: None, None
+        size: self.parent.size
+        pos: 0,0
+        
+    InfoLayer:
+        id: _info_layer
+        pos: 0,0
+        size: W.size
+
+    ControllersLayer:
+        id: _controll_layer
+        pos: 0,0
+        size: W.size
+
+
+    MotionControllLayer:
+        id: _motion_controll_layer
+        pos: 0,0
+        size: W.size
+    
+    MapWidget:
+        id: _map_layer
+        size_hint: None, None
+        size: dp(180), dp(100)
+        pos: dp(3), dp(3)
+
+    StatusBar:
+        id: statusbar
+        size_hint: None, None
+        size: W.width, dp(40)
+        pos: 0, W.height-dp(40)
+
+    TimeProgressBar:
+        size_hint: None, None
+        size: W.width, dp(3)
+        pos: 0, W.height-dp(40)-self.height
+
+    SettingPanel:
+        id: _setting_panel
+        size_hint: None, None
+        size: W.width*0.7, W.height
+        pos: W.width+dp(40), 0
+

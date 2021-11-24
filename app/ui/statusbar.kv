@@ -1,0 +1,89 @@
+##:kivy
+
+
+<StatusBar>:
+    flight_mode: flight_mode.__self__
+    armed_indecator: armed_indecator.__self__
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0, .9
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    MDLabel:
+        id: _title
+        text: "HAWK EYE"
+        
+        size: dp(110), dp(40) #self.texture_size[0], dp(40)
+        pos: dp(5), W.height - dp(40)
+        font_name: 'fonts/roboto/Roboto-Bold.ttf'
+        halign: "left"
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+
+    FlightModeLabel:
+        id: flight_mode
+        size: dp(40), dp(40)
+        pos: dp(120) + dp(10), W.height- dp(40)
+    
+    ArmIndecator:
+        id: armed_indecator
+        armed: False
+        size_hint: None, None
+        size: dp(10), dp(10)
+        center: dp(110) + dp(10), W.height - dp(40)/2
+
+        canvas.before:
+            Color:
+                rgba: (0,1,0,1) if self.armed else (1,0,0,1)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [self.width]
+
+    MDIcon:
+        icon: "access-point-network"
+        font_size: "19sp"
+        pos: W.width-dp(40)*6, W.height - dp(40)
+        size: dp(40), dp(40)
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+    MDIcon:
+        icon: "signal-4g"
+        font_size: "19sp"
+        pos: W.width-dp(40)*5, W.height - dp(40)
+        size: dp(40), dp(40)
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+    MDIcon:
+        icon: "battery-40"
+        font_size: "19sp"
+        pos: W.width-dp(40)*4, W.height - dp(40)
+        size: dp(40), dp(40)
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+    MDIcon:
+        icon: "satellite-uplink"
+        font_size: "19sp"
+        pos: W.width-dp(40)*3, W.height - dp(40)
+        size: dp(40), dp(40)
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+    MDIcon:
+        icon: "wifi"
+        font_size: "19sp"
+        pos: W.width-dp(40)*2, W.height - dp(40)
+        size: dp(40), dp(40)
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+    MDIconButton:
+        icon: 'dots-horizontal'
+        size: dp(40), dp(40)
+        pos: W.width-dp(40)*1, W.height - dp(40)
+        theme_text_color: "Custom"
+        text_color: 1,1,1,1
+
+        on_release:
+            app.open_setting_panel_animation.start(app.setting_panel)

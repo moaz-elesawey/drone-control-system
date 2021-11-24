@@ -1,0 +1,91 @@
+##:kivy
+
+<ControllersLayer>:
+    _gyroscope: _gyroscope.__self__
+
+    canvas.before:
+        Color:
+            rgba: 0,0,0,0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    InfoCard:
+        icon: 'play'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(40)*1-dp(30), W.height - (dp(80) + dp(15))
+        
+        on_release:
+            app.send_command('1')
+
+    InfoCard:
+        icon: 'home-map-marker'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(45)*2-dp(30), W.height - (dp(80) + dp(15))
+        on_release:
+            app.send_command('11')
+    InfoCard:
+        padding: dp(10), dp(9)
+        # icon: 'airballoon'
+        source: 'assets/drop-package-icon.png'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(45)*3-dp(30), W.height - (dp(80) + dp(15))
+    
+    InfoCard:
+        icon: 'lan-connect'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: dp(45)*4-dp(30), W.height - (dp(80) + dp(15))
+        on_release:
+            app.update_info_thread.start()
+
+##############
+    # Right
+
+#################
+
+    # Right
+
+    InfoCard:
+        icon: 'camera-off'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(95), W.height - (dp(80) + dp(15))
+    InfoCard:
+        icon: 'camera'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(50), W.height - (dp(80) + dp(15))
+        on_release:
+            app.start_recv()
+        
+    InfoCard:
+        icon: 'minus-box'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(45*4+5), W.height - (dp(80) + dp(15))
+
+    InfoCard:
+        icon: 'plus-box'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(45*3+5), W.height - (dp(80) + dp(15))
+    
+    InfoCard:
+        icon: 'monitor-screenshot'
+        size_hint: None, None
+        size: dp(40), dp(40)
+        pos: W.width-dp(45*5+5), W.height - (dp(80) + dp(15))
+        on_release:
+            app.save_feed_frame()
+
+
+    Gyroscope:
+        id: _gyroscope
+        size_hint: None, None
+        size: dp(140), dp(140)
+        pos: W.width//2-(self.width//2), dp(3)
+        
